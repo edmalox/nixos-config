@@ -73,11 +73,6 @@
     driSupport32Bit = true;
   };
 
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [
-      "#nvidia-x11"
-    ];
-
   hardware.nvidia = {
     modesetting.enable = true;
     open = false;
