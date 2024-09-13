@@ -98,13 +98,13 @@
      "\${HOME}/.local/bin"
      "\${HOME}/.config/rofi/scripts"
    ];
-   NIXPKGS_ALLOW_UNFREE = "1";
+   #NIXPKGS_ALLOW_UNFREE = "1";
    #PKG_CONFIG_PATH = lib.makeLibraryPath [ libevdev ];
   };
 
-  environment.systemPackages = with pkgs; [
-  libevdev
-];
+  #environment.systemPackages = with pkgs; [
+  #libevdev
+#];
 
 
   # This value determines the NixOS release from which the default
