@@ -60,7 +60,7 @@
 
   services.xserver = {
    enable = true;
-   videoDrivers = ["nvidia"];
+   ###videoDrivers = ["nvidia"];
     # X11 keymap
     #layout = "gb";
     #xkbVariant = "";
@@ -71,19 +71,19 @@
   };
 
   #NvidiaConfig
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
-  };
+  ###hardware.opengl = {
+  ###  enable = true;
+  ###  driSupport = true;
+  ###  driSupport32Bit = true;
+  ###};
 
-  hardware.nvidia = {
-    modesetting.enable = true;
-    open = false;
+  ###hardware.nvidia = {
+  ####  modesetting.enable = true;
+  ####  open = false;
 
-    nvidiaSettings = true;
+  ####  nvidiaSettings = true;
     #package = config.boot.kernelPackages.nvidiaPackages.latest;
-  };
+  ####};
 
   sound.enable = true;
   hardware.pulseaudio.enable = false;
