@@ -50,13 +50,67 @@
   };
 
   # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "gb";
-    variant = "";
-  };
+  #services.xserver.xkb = {
+  #  layout = "gb";
+  #  variant = "";
+  #};
 
   # Configure console keymap
   console.keyMap = "uk";
+
+  services.xserver = {
+   enable = true;
+   videoDrivers = ["nvidia"];
+    # X11 keymap
+    layout = "gb";
+    xkbVariant = "";
+  };
+
+  #NvidiaConfig
+  hardware.opengl = {
+    enable = true;
+    driSupport = true;
+    driSupport32Bit = true;
+  };
+
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (lib.getName pkg) [
+      "#nvidia-x11"
+    ];
+
+  hardware.nvidia = {
+    modesetting.enable = true;
+    open = false;
+
+    nvidiaSettings = true;
+    package = config.boot.kernelPackages.nvidiaPackages.latest;
+  };
+
+  sound.enable = true;
+  hardware.pulseaudio.enable = false;
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  };
+
+  # add /.local to $PATH
+  environment.variables={
+   NIXOS_OZONE_WL = "1";
+   PATH = [
+     "\${HOME}/.local/bin"
+     "\${HOME}/.config/rofi/scripts"
+   ];
+   NIXPKGS_ALLOW_UNFREE = "1";
+   #PKG_CONFIG_PATH = lib.makeLibraryPath [ libevdev ];
+  };
+
+  environment.systemPackages = with pkgs; [
+  libevdev
+];
+
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

@@ -12,6 +12,12 @@
     ../../home/programs
     #../../home/rofi
     #../../home/shell
+    ../../home/programs/kitty
+    ../../home/programs/dunst
+    ../../home/programs/hypr
+    ../../home/programs/rofi
+    ../../home/programs/waybar
+    ../../home/programs/zsh
   ];
 
   programs.git = {
