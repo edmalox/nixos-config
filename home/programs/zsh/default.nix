@@ -12,7 +12,7 @@
                 ];
             };
 
-            autosuggestion {
+            autosuggestion = {
                 enable = true;
             };
             enableCompletion = true;
