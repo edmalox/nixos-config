@@ -15,7 +15,7 @@
     enable = true;
     systemd = {
         enable = true;
-    }
+    };
     #nvidiaPatches = true;
     extraConfig = ''
 
