@@ -5,6 +5,10 @@
   #
   ##################################################################################################################
 
+  imports = [
+    ../../modules/gdm-profile.nix
+  ];
+
   users.users.edmalox = {
     # edmalox's authorizedKeys
     password = "password";
