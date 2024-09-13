@@ -1,33 +1,36 @@
-{ lib, config, ...}:
+{config, lib, pkgs, ...}: let
+  inherit (lib) types;
 
-let
-  userOptions = with lib; {
-    options.icon = mkOption { type = types.nullOr types.path; default = null; };
+  iconOptions.options.icon = lib.mkOption {
+    type = types.nullOr types.path;
+    default = null;
   };
 
-  mkGdmUserConf = icon: ''
-    [User]
-    Session=
-    XSession=
-    Icon=${icon}
-    SystemAccount=false
+  users = lib.filterAttrs (_: value: value.icon != null) config.users.users;
+  iconLinks = lib.mapAttrsToList (name: value: "ln -s ${value.icon} ${name}") users;
+  icons = pkgs.runCommand "user-icons" {} ''
+    mkdir $out
+    cd $out
+    ${builtins.concatStringsSep "\n" iconLinks}
   '';
 
-  userList = with lib; filter (entry: entry.icon != null) (mapAttrsToList (name: value: { inherit name; icon = value.icon; }) config.users.users);
+  templateText = lib.generators.toINI {} {
+    User.Icon = "${icons}/\${USER}";
+  };
+  templateFile = pkgs.writeText "user-template" templateText;
+  templateDir = "share/accountsservice/user-templates";
 
-  mkBootCommand = entry: "echo -e '${mkGdmUserConf entry.icon}' > /var/lib/AccountsService/users/${entry.name}\n";
+  templates = pkgs.runCommand "user-templates" { meta.priority = 0; } ''
+    mkdir -p $out/${templateDir}
+    cd $out/${templateDir}
 
-  bootCommands = map mkBootCommand userList;
-in
-
-{
-  options = {
-    users.users = with lib; with types; mkOption {
-      type = attrsOf (submodule userOptions);
-    };
+    ln -s ${templateFile} administrator
+    ln -s ${templateFile} standard
+  '';
+in {
+  options.users.users = lib.mkOption {
+    type = types.attrsOf (types.submodule iconOptions);
   };
 
-  config = lib.mkIf config.services.xserver.displayManager.gdm.enable {
-    boot.postBootCommands = with lib; strings.concatStrings bootCommands;
-  };
+  config.environment.systemPackages = [templates];
 }
