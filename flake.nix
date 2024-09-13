@@ -34,11 +34,9 @@
     ...
   }: {
     nixosConfigurations = {
-      inherit system;
-      specialArgs = { inherit hyprland; };
       nixvm = let
         username = "edmalox";
-        specialArgs = {inherit username;};
+        specialArgs = {inherit username hyprland;};
       in
         nixpkgs.lib.nixosSystem {
           inherit specialArgs;
