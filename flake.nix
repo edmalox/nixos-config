@@ -31,6 +31,7 @@
     self,
     nixpkgs,
     home-manager,
+    hyprland,
     ...
   }: {
     nixosConfigurations = {
