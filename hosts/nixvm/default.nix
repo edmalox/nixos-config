@@ -62,8 +62,12 @@
    enable = true;
    videoDrivers = ["nvidia"];
     # X11 keymap
-    layout = "gb";
-    xkbVariant = "";
+    #layout = "gb";
+    #xkbVariant = "";
+    xkb = {
+      layout = "gb";
+      variant = "";
+    };
   };
 
   #NvidiaConfig
